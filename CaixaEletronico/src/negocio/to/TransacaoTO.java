@@ -11,12 +11,29 @@ import java.math.BigDecimal;
  * @author 71306587
  */
 public class TransacaoTO {
+    private int tipoTransacao;
     private int nuAgenciaCliente;
     private int nuContaCliente;
     private BigDecimal saldo;
     private int nuAgenciaDestino;
     private int nuContaDestino;
     private BigDecimal valor;
+    
+    /* Retorna uma breve descrição da conta
+     * @return descrição da conta
+     */
+    @Override
+    public String toString(){
+        return "Agência: " + getNuAgenciaCliente() + " | Conta: " + getNuContaCliente();
+    }
+
+    public int getTipoTransacao() {
+        return tipoTransacao;
+    }
+
+    public void setTipoTransacao(int tipoTransacao) {
+        this.tipoTransacao = tipoTransacao;
+    }
 
     /* Retorna o número da agência do cliente
      * @return Número da agência do cliente
@@ -60,14 +77,6 @@ public class TransacaoTO {
         this.saldo = saldo;
     }
     
-    /* Retorna uma breve descrição da conta
-     * @return descrição da conta
-     */
-    @Override
-    public String toString(){
-        return "Agência: " + getNuAgenciaCliente() + " | Conta: " + getNuContaCliente();
-    }
-    
     public int getNuAgenciaDestino() {
         return nuAgenciaDestino;
     }
@@ -91,4 +100,12 @@ public class TransacaoTO {
     public void setValor(BigDecimal valor) {
         this.valor = valor;
     }
+    
+    /**
+     * Constantes
+     */
+    public static final int tipoSaldo = 1;
+    public static final int tipoTransferencia = 2;
+    public static final int tipoDeposito = 3;
+    public static final int tipoSaque = 4;
 }

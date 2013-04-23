@@ -74,8 +74,4 @@ public class Comprovante {
     }
     
     
-    public static final int tipoSaldo = 1;
-    public static final int tipoTransferencia = 2;
-    public static final int tipoDeposito = 3;
-    public static final int tipoSaque = 4;
 }
