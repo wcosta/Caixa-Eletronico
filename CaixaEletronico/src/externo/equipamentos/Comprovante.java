@@ -25,8 +25,8 @@ public class Comprovante {
             + "Data: " + getDataAtual() + "\n"
             + "Localidade: Mackenzie - São Paulo - SP\n"
             + "----------------------------\n"
-            + "Agência: " + getDados().getNuAgenciaCliente() 
-            + " | Conta: " + getDados().getNuContaCliente()
+            + "Agência: " + getDados().getCliente().getNuAgencia() 
+            + " | Conta: " + getDados().getCliente().getNuConta()
             + "----------------------------\n";
     private final String rodape = "----------------------------\n";
     
@@ -45,13 +45,13 @@ public class Comprovante {
                 break;
             case 2:
                 comprovante += "Saldo atual: " + getDados().getSaldo()
-                        + "\nAgência Favorecido: " + getDados().getNuAgenciaDestino()
-                        + "\nConta Favorecido: " + getDados().getNuContaDestino()
+                        + "\nAgência Favorecido: " + getDados().getDestino().getNuAgencia()
+                        + "\nConta Favorecido: " + getDados().getDestino().getNuConta()
                         + "\nValor transferido: " + getDados().getValor() + "\n";
                 break;
             case 3:
-                comprovante += "Agência Favorecido: " + getDados().getNuAgenciaDestino()
-                        + "\nConta Favorecido: " + getDados().getNuContaDestino()
+                comprovante += "Agência Favorecido: " + getDados().getDestino().getNuAgencia()
+                        + "\nConta Favorecido: " + getDados().getDestino().getNuConta()
                         + "\nValor depositado: " + getDados().getValor() + "\n";
                 break;
             case 4:

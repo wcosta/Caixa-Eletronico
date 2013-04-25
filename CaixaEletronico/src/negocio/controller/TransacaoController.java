@@ -4,22 +4,10 @@
  */
 package negocio.controller;
 
-import negocio.to.TransacaoTO;
-
 /**
  *
- * @author 71306587
+ * @author wcosta
  */
-public class TransacaoController {
-    private TransacaoTO dados;
+public interface TransacaoController {
     
-    
-
-    public TransacaoTO getDados() {
-        return dados;
-    }
-
-    public void setDados(TransacaoTO dados) {
-        this.dados = dados;
-    }
 }
