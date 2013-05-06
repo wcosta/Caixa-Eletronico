@@ -2,17 +2,17 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package negocio.to;
+package com.atm.business.to;
 
 /**
  *
  * @author wcosta
  */
-public class ContaTO {
+public class AccountTO {
     private int nuAgencia;
     private int nuConta;
 
-    public ContaTO(int ag, int ct) {
+    public AccountTO(int ag, int ct) {
         this.nuAgencia = ag;
         this.nuConta = ct;
     }

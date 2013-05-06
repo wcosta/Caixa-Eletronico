@@ -2,21 +2,21 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package externo.equipamentos;
+package com.atm.external.hardware;
 
+import com.atm.business.to.TransactionTO;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import negocio.to.TransacaoTO;
 
 /**
  *
  * @author 71306587
  */
-public class Comprovante {
-    private TransacaoTO dados;
+public class Ticket {
+    private TransactionTO dados;
     private int tipoComprovante;
     
-    public Comprovante(TransacaoTO to, int tipoComprovante) { 
+    public Ticket(TransactionTO to, int tipoComprovante) { 
         dados = to;
         this.tipoComprovante = tipoComprovante;
     }
@@ -65,11 +65,11 @@ public class Comprovante {
         return comprovante;
     }
 
-    public TransacaoTO getDados() {
+    public TransactionTO getDados() {
         return dados;
     }
 
-    public void setDados(TransacaoTO dados) {
+    public void setDados(TransactionTO dados) {
         this.dados = dados;
     }
     

@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package negocio.to;
+package com.atm.business.to;
 
 import java.math.BigDecimal;
 
@@ -10,31 +10,31 @@ import java.math.BigDecimal;
  *
  * @author 71306587
  */
-public class TransacaoTO {
-    private ContaTO cliente;
-    private ContaTO destino;
+public class TransactionTO {
+    private AccountTO cliente;
+    private AccountTO destino;
     private int tipoTransacao;
     private BigDecimal valor;
     private BigDecimal saldo;
     
-    public TransacaoTO (ContaTO c1, ContaTO c2) {
+    public TransactionTO (AccountTO c1, AccountTO c2) {
         cliente = c1;
         destino = c2;
     }
 
-    public ContaTO getCliente() {
+    public AccountTO getCliente() {
         return cliente;
     }
 
-    public void setCliente(ContaTO cliente) {
+    public void setCliente(AccountTO cliente) {
         this.cliente = cliente;
     }
 
-    public ContaTO getDestino() {
+    public AccountTO getDestino() {
         return destino;
     }
 
-    public void setDestino(ContaTO destino) {
+    public void setDestino(AccountTO destino) {
         this.destino = destino;
     }
     
