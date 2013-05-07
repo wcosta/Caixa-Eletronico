@@ -12,6 +12,7 @@ public class AccountTO {
     private int numAgency;
     private int numAccount;
 
+    
     public AccountTO(int ag, int ct) {
         this.numAgency = ag;
         this.numAccount = ct;
