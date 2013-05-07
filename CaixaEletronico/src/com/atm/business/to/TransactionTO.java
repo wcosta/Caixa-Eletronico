@@ -11,62 +11,62 @@ import java.math.BigDecimal;
  * @author 71306587
  */
 public class TransactionTO {
-    private AccountTO cliente;
-    private AccountTO destino;
-    private int tipoTransacao;
-    private BigDecimal valor;
-    private BigDecimal saldo;
+    private AccountTO client;
+    private AccountTO destiny;
+    private int transactionType;
+    private BigDecimal value;
+    private BigDecimal balance;
     
     public TransactionTO (AccountTO c1, AccountTO c2) {
-        cliente = c1;
-        destino = c2;
+        client = c1;
+        destiny = c2;
     }
 
-    public AccountTO getCliente() {
-        return cliente;
+    public AccountTO getClient() {
+        return client;
     }
 
-    public void setCliente(AccountTO cliente) {
-        this.cliente = cliente;
+    public void setClient(AccountTO cliente) {
+        this.client = cliente;
     }
 
-    public AccountTO getDestino() {
-        return destino;
+    public AccountTO getDestiny() {
+        return destiny;
     }
 
-    public void setDestino(AccountTO destino) {
-        this.destino = destino;
+    public void setDestiny(AccountTO destino) {
+        this.destiny = destino;
     }
     
-    public int getTipoTransacao() {
-        return tipoTransacao;
+    public int getTransactionType() {
+        return transactionType;
     }
 
-    public void setTipoTransacao(int tipoTransacao) {
-        this.tipoTransacao = tipoTransacao;
+    public void setTransactionType(int tipoTransacao) {
+        this.transactionType = tipoTransacao;
     }
     
-    public BigDecimal getValor() {
-        return valor;
+    public BigDecimal getValue() {
+        return value;
     }
 
-    public void setValor(BigDecimal valor) {
-        this.valor = valor;
+    public void setValue(BigDecimal valor) {
+        this.value = valor;
     }
 
-    public BigDecimal getSaldo() {
-        return saldo;
+    public BigDecimal getBalance() {
+        return balance;
     }
 
-    public void setSaldo(BigDecimal saldo) {
-        this.saldo = saldo;
+    public void setBalance(BigDecimal saldo) {
+        this.balance = saldo;
     }
     
     /**
      * Constantes
      */
-    public static final int tipoSaldo = 1;
-    public static final int tipoTransferencia = 2;
-    public static final int tipoDeposito = 3;
-    public static final int tipoSaque = 4;
+    public static final int TYPE_BALANCE = 1;
+    public static final int TYPE_TRANSFER = 2;
+    public static final int TYPE_DEPOSIT = 3;
+    public static final int TYPE_WITHDRAW = 4;
 }

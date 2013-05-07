@@ -11,7 +11,7 @@ import com.atm.business.to.TransactionTO;
  * @author 71306587
  */
 public class Printer {
-    public String imprimirComprovante (TransactionTO to, int tipoComprovante) {
+    public String printTicket (TransactionTO to, int tipoComprovante) {
         Ticket comp = new Ticket(to, tipoComprovante);
         return comp.toString();
     }

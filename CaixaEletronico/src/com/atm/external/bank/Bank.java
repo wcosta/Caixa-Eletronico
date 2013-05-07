@@ -2,8 +2,8 @@ package com.atm.external.bank;
 
 import com.atm.business.to.AccountTO;
 import com.atm.business.to.TransactionTO;
-import java.math.BigDecimal;
 import com.atm.exception.TransactionException;
+import java.math.BigDecimal;
 
 /*
  * To change this template, choose Tools | Templates
@@ -30,27 +30,27 @@ public class Bank {
         }
         return instance;
     }
-    public boolean validarSenha (AccountTO conta) {
-        if(conta.getNuAgencia() != 2){
+    public boolean validatePassword (AccountTO conta) {
+        if(conta.getNumAgency() != 2){
             return true;
         }else{
             return false;
         }
     }
-    public boolean validarSessao (AccountTO conta) {
-        if(conta.getNuAgencia() != 3){
+    public boolean validateSession (AccountTO conta) {
+        if(conta.getNumAgency() != 3){
             return true;
         }else{
             return false;
         }
     }
-    public BigDecimal retornarSaldo (TransactionTO to){
-        if(to.getSaldo() != null) {
-            return to.getSaldo();
+    public BigDecimal getBalance (TransactionTO to){
+        if(to.getBalance() != null) {
+            return to.getBalance();
         }
         BigDecimal saldo;
         try {
-            switch(to.getCliente().getNuAgencia()) {
+            switch(to.getClient().getNumAgency()) {
                 case 1:
                     saldo = new BigDecimal(1000).setScale(2);
                     break;
@@ -76,22 +76,22 @@ public class Bank {
         return null;
     }
     
-    public boolean aprovarDeposito (TransactionTO to) {
-        if(to.getCliente().getNuAgencia() == 4) {
+    public boolean approveDeposit (TransactionTO to) {
+        if(to.getClient().getNumAgency() == 4) {
             return false;
         } else {
             return true;
         }
     }
-    public boolean aprovarTransferencia (TransactionTO to) {
-        if(to.getCliente().getNuAgencia() == 4) {
+    public boolean approveTransfer (TransactionTO to) {
+        if(to.getClient().getNumAgency() == 4) {
             return false;
         } else {
             return true;
         }
     }
-    public boolean aprovarSaque (TransactionTO to) {
-        if(to.getCliente().getNuAgencia() == 4) {
+    public boolean approveWithdraw (TransactionTO to) {
+        if(to.getClient().getNumAgency() == 4) {
             return false;
         } else {
             return true;

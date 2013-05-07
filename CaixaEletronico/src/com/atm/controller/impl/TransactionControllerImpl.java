@@ -16,32 +16,32 @@ import java.math.BigDecimal;
  */
 public class TransactionControllerImpl implements TransactionController{    
     @Override
-    public boolean validarSenha(AccountTO conta){
-        return Bank.getInstance().validarSenha(conta);
+    public boolean validatePassword(AccountTO conta){
+        return Bank.getInstance().validatePassword(conta);
     }
     
     @Override
-    public boolean validarSessao(AccountTO conta){
-        return Bank.getInstance().validarSessao(conta);
+    public boolean validateSession(AccountTO conta){
+        return Bank.getInstance().validateSession(conta);
     }
 
     @Override
-    public BigDecimal retornarSaldo(TransactionTO to) {
-        return Bank.getInstance().retornarSaldo(to);
+    public BigDecimal getBalance(TransactionTO to) {
+        return Bank.getInstance().getBalance(to);
     }
 
     @Override
-    public boolean aprovarDeposito(TransactionTO to) {
-        return Bank.getInstance().aprovarDeposito(to);
+    public boolean approveDeposit(TransactionTO to) {
+        return Bank.getInstance().approveDeposit(to);
     }
 
     @Override
-    public boolean aprovarTransferencia(TransactionTO to) {
-        return Bank.getInstance().aprovarTransferencia(to);
+    public boolean approveTransfer(TransactionTO to) {
+        return Bank.getInstance().approveTransfer(to);
     }
 
     @Override
-    public boolean aprovarSaque(TransactionTO to) {
-        return Bank.getInstance().aprovarSaque(to);
+    public boolean approveWithdraw(TransactionTO to) {
+        return Bank.getInstance().approveWithdraw(to);
     }
 }

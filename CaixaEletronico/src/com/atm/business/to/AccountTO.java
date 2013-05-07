@@ -9,27 +9,27 @@ package com.atm.business.to;
  * @author wcosta
  */
 public class AccountTO {
-    private int nuAgencia;
-    private int nuConta;
+    private int numAgency;
+    private int numAccount;
 
     public AccountTO(int ag, int ct) {
-        this.nuAgencia = ag;
-        this.nuConta = ct;
+        this.numAgency = ag;
+        this.numAccount = ct;
     }
     
-    public int getNuAgencia() {
-        return nuAgencia;
+    public int getNumAgency() {
+        return numAgency;
     }
 
-    public void setNuAgencia(int nuAgencia) {
-        this.nuAgencia = nuAgencia;
+    public void setNumAgency(int nuAgencia) {
+        this.numAgency = nuAgencia;
     }
 
-    public int getNuConta() {
-        return nuConta;
+    public int getNumAccount() {
+        return numAccount;
     }
 
-    public void setNuConta(int nuConta) {
-        this.nuConta = nuConta;
+    public void setNumAccount(int nuConta) {
+        this.numAccount = nuConta;
     }
 }
