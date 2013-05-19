@@ -17,9 +17,8 @@ public class TransactionTO {
     private BigDecimal value;
     private BigDecimal balance;
     
-    public TransactionTO (AccountTO c1, AccountTO c2) {
+    public TransactionTO (AccountTO c1) {
         client = c1;
-        destiny = c2;
     }
 
     public AccountTO getClient() {

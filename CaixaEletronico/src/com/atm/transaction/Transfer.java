@@ -2,12 +2,12 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.atm.exception;
+package com.atm.transaction;
 
 /**
  *
- * @author 71306587
+ * @author Walter
  */
-public class CommunicationException {
+public class Transfer {
     
 }

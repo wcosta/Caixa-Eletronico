@@ -5,14 +5,19 @@
 package com.atm.external.hardware;
 
 import com.atm.business.to.TransactionTO;
+import com.atm.exception.HardwareException;
 
 /**
  *
  * @author 71306587
  */
 public class Printer {
-    public String printTicket (TransactionTO to, int tipoComprovante) {
-        Ticket comp = new Ticket(to, tipoComprovante);
-        return comp.toString();
+    public String printTicket (TransactionTO to, int tipoComprovante) throws HardwareException {
+        if(to.getClient().getNumAgency() == 5) {
+            throw new HardwareException (this);
+        } else {
+            Ticket comp = new Ticket(to, tipoComprovante);
+            return comp.toString();
+        }
     }
 }
