@@ -1,9 +1,9 @@
 Caixa-Eletronico
 ================
 
-Sistema do caixa eletronico da aula do Miana
+Sistema do caixa eletronico da aula do professor Miana
 
-Aqui ficaram as documentações e arquivos para o Sistema.
+Aqui ficam as documentações e arquivos do Sistema.
 
 Nomes:
 Felipe Augusto <br />
