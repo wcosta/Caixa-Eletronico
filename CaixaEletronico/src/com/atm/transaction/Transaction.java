@@ -9,5 +9,7 @@ package com.atm.transaction;
  * @author Walter
  */
 public class Transaction {
-    
+    public void cancelOperation(){
+        
+    }
 }

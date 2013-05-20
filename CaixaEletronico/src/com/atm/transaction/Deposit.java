@@ -4,10 +4,16 @@
  */
 package com.atm.transaction;
 
+import com.atm.business.to.TransactionTO;
+import com.atm.exception.TransactionException;
+import com.atm.external.bank.Bank;
+
 /**
  *
  * @author Walter
  */
-public class Deposit {
-    
+public class Deposit extends Transaction {
+     public static boolean depositValue (TransactionTO to) throws TransactionException{
+        return Bank.getInstance().approveDeposit(to);
+    }
 }

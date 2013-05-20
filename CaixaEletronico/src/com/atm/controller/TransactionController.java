@@ -8,7 +8,6 @@ import com.atm.business.to.AccountTO;
 import com.atm.business.to.TransactionTO;
 import com.atm.exception.TransactionException;
 import com.atm.exception.ValidationException;
-import java.math.BigDecimal;
 
 /**
  *
@@ -17,8 +16,5 @@ import java.math.BigDecimal;
 public interface TransactionController {
     public boolean validatePassword(AccountTO conta) throws ValidationException;
     public boolean validateSession(AccountTO conta) throws ValidationException;
-    public BigDecimal getBalance (TransactionTO to) throws TransactionException;
-    public boolean approveDeposit (TransactionTO to) throws TransactionException;
-    public boolean approveTransfer (TransactionTO to) throws TransactionException;
-    public boolean approveWithdraw (TransactionTO to) throws TransactionException;
+    public Object realizeTransaction(TransactionTO to) throws TransactionException;
 }

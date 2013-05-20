@@ -32,4 +32,15 @@ public class Helper {
      * Erro equipamento
      */
     public static final TransactionTO conta5 = new TransactionTO(new AccountTO(5,104));
+    
+    public static TransactionTO getTransactionTO(int nConta) {
+        switch(nConta) {
+            case 1: return conta1;
+            case 2: return conta2;
+            case 3: return conta3;
+            case 4: return conta4;
+            case 5: return conta5;
+        }
+        return null;
+    }
 }
