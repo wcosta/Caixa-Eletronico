@@ -15,13 +15,8 @@ import com.atm.external.hardware.Printer;
  * @author 71306587
  */
 public interface DeviceController {
-    public DeviceControllerImpl getInstance();
-
     public CardReceptor getCardReceptor();
-
     public Dispenser getDispenser();
-
     public EnvelopeReceptor getEnvelopeReceptor();
-
     public Printer getPrinter();
 }

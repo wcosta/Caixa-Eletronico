@@ -4,7 +4,9 @@
  */
 package com.atm.factory;
 
+import com.atm.controller.DeviceController;
 import com.atm.controller.TransactionController;
+import com.atm.controller.impl.DeviceControllerImpl;
 import com.atm.controller.impl.TransactionControllerImpl;
 
 /**
@@ -13,11 +15,19 @@ import com.atm.controller.impl.TransactionControllerImpl;
  */
 public class ControllerFactory {
     private static TransactionController transactionController;
+    private static DeviceController deviceController;
     
     public static TransactionController getTCInstance(){
         if(transactionController == null) {
             transactionController = new TransactionControllerImpl();
         }
         return transactionController;
+    }
+    
+    public static DeviceController getDCInstance(){
+        if(deviceController == null) {
+            deviceController = new DeviceControllerImpl();
+        }
+        return deviceController;
     }
 }

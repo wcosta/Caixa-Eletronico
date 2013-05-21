@@ -4,7 +4,6 @@
  */
 package com.atm.external.hardware;
 
-import com.atm.business.to.AccountTO;
 import com.atm.exception.HardwareException;
 
 /**
@@ -12,11 +11,15 @@ import com.atm.exception.HardwareException;
  * @author 71306587
  */
 public class CardReceptor {
-    public boolean receiveCard(AccountTO acc) throws HardwareException{
-        if(acc.getNumAgency() == 5) {
-            throw new HardwareException(this);
-        } else {
-            return true;
-        }
+    public void receiveCard() {
+        System.out.println("Cartão inserido.");
+    }
+    
+    public void removeCard() {
+        System.out.println("Remova o cartão.");
+    }
+    public void blockCard () throws HardwareException {
+        throw new HardwareException("Terceira tentativa de senha incorreta!\n"
+                + "Seu cartão foi bloqueado!");
     }
 }

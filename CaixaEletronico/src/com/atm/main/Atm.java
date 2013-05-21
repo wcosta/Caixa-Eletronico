@@ -5,7 +5,9 @@
 package com.atm.main;
 
 import com.atm.business.to.TransactionTO;
+import com.atm.controller.DeviceController;
 import com.atm.controller.TransactionController;
+import com.atm.exception.HardwareException;
 import com.atm.exception.ValidationException;
 import com.atm.external.bank.Helper;
 import com.atm.factory.ControllerFactory;
@@ -27,13 +29,33 @@ public class Atm {
         Scanner in = new Scanner(System.in);
         int n = in.nextInt();
         TransactionTO transacao = Helper.getTransactionTO(n);
-        String senha = in.nextLine();
         TransactionController transactionController = ControllerFactory.getTCInstance();
-        try {
-            transactionController.validatePassword(transacao.getClient());
-        } catch (ValidationException ex) {
-            System.out.println(ex.getMessage());
-            System.exit(0);
+        DeviceController deviceController = ControllerFactory.getDCInstance();
+        
+        deviceController.getCardReceptor().receiveCard();
+        
+        String senha = "";
+        int tentativas = 0;
+        while(true) {
+            try {
+                if(tentativas == 0) {
+                    System.out.println("Digite sua senha.");
+                } else if(tentativas >= 3) {
+                    deviceController.getCardReceptor().blockCard();
+                }else {
+                    System.out.println("Senha incorreta, tente novamente (Tentativa " + 
+                            (tentativas + 1) + ")");
+                }
+                senha = in.next();
+                if(transactionController.validatePassword(transacao.getClient())){
+                    break;
+                }
+            } catch (ValidationException ex) {
+                tentativas++;
+            } catch (HardwareException ex) {
+                System.out.println(ex.getMessage());
+                System.exit(0);
+            }
         }
         
         System.out.println("Selecione a operação desejada:"
@@ -55,6 +77,9 @@ public class Atm {
             System.exit(0);
         }
         System.out.println(processResults(transacao, obj));
+        
+        deviceController.getCardReceptor().removeCard();
+                
     }
     
     public static String processResults (TransactionTO to, Object obj) {

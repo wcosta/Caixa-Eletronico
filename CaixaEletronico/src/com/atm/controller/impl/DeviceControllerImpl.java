@@ -23,14 +23,6 @@ public class DeviceControllerImpl implements DeviceController {
     private Printer printer = new Printer();
     
     @Override
-    public DeviceControllerImpl getInstance() {
-        if(instance == null) {
-            instance =  new DeviceControllerImpl();
-        }
-        return instance;
-    }
-
-    @Override
     public CardReceptor getCardReceptor() {
         return cardReceptor;
     }
