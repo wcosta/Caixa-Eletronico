@@ -68,4 +68,8 @@ public class TransactionTO {
     public static final int TYPE_TRANSFER = 2;
     public static final int TYPE_DEPOSIT = 3;
     public static final int TYPE_WITHDRAW = 4;
+    public static final String TEXT_BALANCE = "Consulta de saldo";
+    public static final String TEXT_TRANSFER = "Transferência";
+    public static final String TEXT_DEPOSIT = "Depósito";
+    public static final String TEXT_WITHDRAW = "Saque";
 }

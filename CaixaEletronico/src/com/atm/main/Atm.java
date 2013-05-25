@@ -11,7 +11,9 @@ import com.atm.controller.TransactionController;
 import com.atm.exception.HardwareException;
 import com.atm.exception.ValidationException;
 import com.atm.external.bank.Helper;
-import com.atm.factory.ControllerFactory;
+import com.atm.factory.ComponentFactory;
+import com.atm.log.LogWriter;
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.Scanner;
 
@@ -20,94 +22,106 @@ import java.util.Scanner;
  * @author 71306587
  */
 public class Atm {
-    public static void main(String args[]){
+    public static void main(String args[]) throws IOException {
+        TransactionController transactionController = ComponentFactory.getTransactionControllerInstance();
+        DeviceController deviceController = ComponentFactory.getDeviceControllerInstance();
+        LogWriter logWriter = ComponentFactory.getLogWriterInstance();
         boolean loop = true;
         Scanner in = new Scanner(System.in);
         int num = 0;
-        while(loop){
+        logWriter.writeLog("Iniciando ATM");
+        
+        while (true) {
             System.out.println("Selecione a sua conta:"
-                    + "\n1 - Agência 1 | Conta 100 - Tudo sucesso"
-                    + "\n2 - Agência 2 | Conta 101 - Erro senha"
-                    + "\n3 - Agência 3 | Conta 102 - Erro validação"
-                    + "\n4 - Agência 4 | Conta 103 - Erro transação"
-                    + "\n5 - Agência 5 | Conta 104 - Erro equipamento");
+                        + "\n1 - Agência 1 | Conta 100 - Tudo sucesso"
+                        + "\n2 - Agência 2 | Conta 101 - Erro senha"
+                        + "\n3 - Agência 3 | Conta 102 - Erro validação"
+                        + "\n4 - Agência 4 | Conta 103 - Erro transação"
+                        + "\n5 - Agência 5 | Conta 104 - Erro equipamento"
+                        + "\n0 - Sair");
             num = in.nextInt();
-            
-            if(num >= 1 && num < 6) {
-                loop = false;
-            } else {
-                System.out.println("Opção inválida.");
-            }
-        }
-        
-        loop = true;
-        TransactionTO transacao = Helper.getTransactionTO(num);
-        TransactionController transactionController = ControllerFactory.getTCInstance();
-        DeviceController deviceController = ControllerFactory.getDCInstance();
-        
-        deviceController.getCardReceptor().receiveCard();
-        
-        String senha = "";
-        int tentativas = 0;
-        while(true) {
-            try {
-                if(tentativas == 0) {
-                    System.out.println("Digite sua senha.");
-                } else if(tentativas >= 3) {
-                    deviceController.getCardReceptor().blockCard();
-                }else {
-                    System.out.println("Senha incorreta, tente novamente (Tentativa " + 
-                            (tentativas + 1) + ")");
-                }
-                senha = in.next();
-                if(transactionController.validatePassword(transacao.getClient())){
-                    break;
-                }
-            } catch (ValidationException ex) {
-                tentativas++;
-            } catch (HardwareException ex) {
-                System.out.println(ex.getMessage());
-                System.exit(0);
-            }
-        }
-        while(loop) {
-            System.out.println("Selecione a operação desejada:"
-                    + "\n1 - Consultar Saldo"
-                    + "\n2 - Transferir"
-                    + "\n3 - Depositar"
-                    + "\n4 - Sacar"
-                    + "\n0 - Sair");
 
-            num = in.nextInt();
-            if(num == 0) {
-                break;
-            }else if(num >= 1 && num < 5) {
+            if(num >= 0 && num < 6) {
                 loop = false;
             } else {
                 System.out.println("Opção inválida.");
             }
+            if(num == 0)
+                turnOffAtm();
+            
+            loop = true;
+            
+            deviceController.getCardReceptor().receiveCard();
+            TransactionTO transacao = Helper.getTransactionTO(num);
+            boolean senhaCorreta = false;
+            String senha = "";
+            int tentativas = 0;
+            while(loop) {
+                try {
+                    if(tentativas == 0) {
+                        System.out.println("Digite sua senha.");
+                    } else if(tentativas >= 3) {
+                        deviceController.getCardReceptor().blockCard();
+                    }else {
+                        System.out.println("Senha incorreta, tente novamente (Tentativa " + 
+                                (tentativas + 1) + ")");
+                    }
+                    senha = in.next();
+                    if(transactionController.validatePassword(transacao.getClient())){
+                        senhaCorreta = true;
+                        break;
+                    }
+                } catch (ValidationException ex) {
+                    tentativas++;
+                } catch (HardwareException ex) {
+                    System.out.println(ex.getMessage());
+                    loop = false;
+                }
+            }
+            if(senhaCorreta) {
+                while(true) {
+                    while(loop) {
+                        System.out.println("Selecione a operação desejada:"
+                                + "\n1 - Consultar Saldo"
+                                + "\n2 - Transferir"
+                                + "\n3 - Depositar"
+                                + "\n4 - Sacar"
+                                + "\n0 - Sair");
+
+                        num = in.nextInt();
+                        if(num >= 0 && num < 5) {
+                            loop = false;
+                        } else {
+                            System.out.println("Opção inválida.");
+                        }
+                    }
+                    if(num != 0) {
+                        loop = true;
+                        transacao.setTransactionType(num);
+                        try {
+                            transactionController.validateSession(transacao.getClient());
+                            transacao = getInformations(transacao);
+                            transacao.setBalance(transactionController.consultBalance(transacao).setScale(2));
+                            transacao = transactionController.realizeTransaction(transacao);
+                            logWriter.writeLog(transacao);
+                        } catch (Exception ex) {
+                            System.out.println(ex.getMessage());
+                        }
+                        System.out.println(processResults(transacao));
+
+                        try {
+                            System.out.println(deviceController.getPrinter().printTicket(transacao));
+                        } catch (HardwareException ex) {
+                            System.out.println(ex.getMessage());
+                            logWriter.writeLog(ex.getMessage());
+                        }
+                    } else {
+                        deviceController.getCardReceptor().removeCard();
+                        break;
+                    }
+                }
+            }
         }
-        loop = true;
-        transacao.setTransactionType(num);
-        try {
-            transactionController.validateSession(transacao.getClient());
-            transacao = getInformations(transacao);
-            transacao.setBalance(transactionController.consultBalance(transacao).setScale(2));
-            transacao = transactionController.realizeTransaction(transacao);
-        } catch (Exception ex) {
-            System.out.println(ex.getMessage());
-            System.exit(0);
-        }
-        System.out.println(processResults(transacao));
-        
-        try {
-            System.out.println(deviceController.getPrinter().printTicket(transacao));
-        } catch (HardwareException ex) {
-            System.out.println(ex.getMessage());
-        }
-        
-        deviceController.getCardReceptor().removeCard();
-                
     }
     
     public static TransactionTO getInformations(TransactionTO to) {
@@ -167,5 +181,11 @@ public class Atm {
         }
         
         return texto;
+    }
+    
+    public static void turnOffAtm() throws IOException {
+        ComponentFactory.getLogWriterInstance().writeLog("Desligando ATM");
+        ComponentFactory.getLogWriterInstance().closeLog();
+        System.exit(0);
     }
 }
