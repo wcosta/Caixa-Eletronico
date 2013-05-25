@@ -75,6 +75,7 @@ public class Atm {
                     tentativas++;
                 } catch (HardwareException ex) {
                     System.out.println(ex.getMessage());
+                    logWriter.writeLog(ex.getMessage());
                     loop = false;
                 }
             }
@@ -104,14 +105,15 @@ public class Atm {
                             transacao.setBalance(transactionController.consultBalance(transacao).setScale(2));
                             transacao = transactionController.realizeTransaction(transacao);
                             logWriter.writeLog(transacao);
-                        } catch (Exception ex) {
-                            System.out.println(ex.getMessage());
-                        }
-                        System.out.println(processResults(transacao));
+                            System.out.println(processResults(transacao));
 
-                        try {
-                            System.out.println(deviceController.getPrinter().printTicket(transacao));
-                        } catch (HardwareException ex) {
+                            try {
+                                System.out.println(deviceController.getPrinter().printTicket(transacao));
+                            } catch (HardwareException ex) {
+                                System.out.println(ex.getMessage());
+                                logWriter.writeLog(ex.getMessage());
+                            }
+                        } catch (Exception ex) {
                             System.out.println(ex.getMessage());
                             logWriter.writeLog(ex.getMessage());
                         }

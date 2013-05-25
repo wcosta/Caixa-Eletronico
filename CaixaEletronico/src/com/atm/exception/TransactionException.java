@@ -12,14 +12,21 @@ import com.atm.business.to.TransactionTO;
  */
 public class TransactionException extends Exception {
     private TransactionTO dados;
-    public static final String message = "Erro na transação: ";
+    private String message;
+    public static final String standardMessage = "Erro na transação: ";
     public TransactionException (TransactionTO to) {
         this.dados = to;
+    }
+    public TransactionException (String msg) {
+        message = msg;
     }
     
     @Override
     public String getMessage(){
-        return message + getTransactionDescription(dados.getTransactionType());
+        if(dados == null) {
+            return message;
+        }
+        return standardMessage + getTransactionDescription(dados.getTransactionType());
     }
     
     public String getTransactionDescription (int type) {

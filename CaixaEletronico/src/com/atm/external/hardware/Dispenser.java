@@ -12,11 +12,11 @@ import com.atm.exception.HardwareException;
  * @author 71306587
  */
 public class Dispenser {
-    public boolean sendBallots(AccountTO acc) throws HardwareException{
+    public void sendBallots(AccountTO acc) throws HardwareException{
         if(acc.getNumAgency() == 5) {
             throw new HardwareException(this);
         } else {
-            return true;
+            System.out.println("Retire o dinheiro.");
         }
     }
 }

@@ -12,11 +12,11 @@ import com.atm.exception.HardwareException;
  * @author 71306587
  */
 public class EnvelopeReceptor {
-    public boolean receiveEnvelope(AccountTO acc) throws HardwareException{
+    public void receiveEnvelope(AccountTO acc) throws HardwareException{
         if(acc.getNumAgency() == 5) {
             throw new HardwareException(this);
         } else {
-            return true;
+            System.out.println("Insira o envelope.\nEnvelope recebido.");
         }
     }
 }

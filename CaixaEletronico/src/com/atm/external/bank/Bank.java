@@ -52,18 +52,18 @@ public class Bank {
         BigDecimal saldo;
         switch(to.getClient().getNumAgency()) {
             case 1:
-                saldo = new BigDecimal(1000).setScale(2);
+                saldo = new BigDecimal(1000000).setScale(2);
                 break;
             case 2:
-                saldo = new BigDecimal(2000).setScale(2);
+                saldo = new BigDecimal(2000000).setScale(2);
                 break;
             case 3:
-                saldo = new BigDecimal(3000).setScale(2);
+                saldo = new BigDecimal(200000).setScale(2);
                 break;
             case 4:
                 throw new TransactionException(to);
             case 5:
-                saldo = new BigDecimal(5000).setScale(2);
+                saldo = new BigDecimal(50000).setScale(2);
                 break;
             default:
                 saldo = new BigDecimal(0).setScale(2);
@@ -82,6 +82,8 @@ public class Bank {
     public TransactionTO approveTransfer (TransactionTO to) throws TransactionException {
         if(to.getClient().getNumAgency() == 4) {
             throw new TransactionException(to);
+        } else if (to.getBalance().intValue() < to.getValue().intValue()) {
+            throw new TransactionException("\nErro: saldo insuficiente.\n");
         } else {
             to.setBalance(new BigDecimal(to.getBalance().intValue() - to.getValue().intValue()).setScale(2));
             return to;
@@ -90,6 +92,8 @@ public class Bank {
     public TransactionTO approveWithdraw (TransactionTO to) throws TransactionException {
         if(to.getClient().getNumAgency() == 4) {
             throw new TransactionException(to);
+        } else if (to.getBalance().intValue() < to.getValue().intValue()) {
+            throw new TransactionException("\nErro: saldo insuficiente.\n");
         } else {
             to.setBalance(new BigDecimal(to.getBalance().intValue() - to.getValue().intValue()).setScale(2));
             return to;
