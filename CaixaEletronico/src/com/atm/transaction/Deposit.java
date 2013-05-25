@@ -12,8 +12,8 @@ import com.atm.external.bank.Bank;
  *
  * @author Walter
  */
-public class Deposit extends Transaction {
-     public static boolean depositValue (TransactionTO to) throws TransactionException{
+public class Deposit {
+     public static TransactionTO depositValue (TransactionTO to) throws TransactionException{
         return Bank.getInstance().approveDeposit(to);
     }
 }

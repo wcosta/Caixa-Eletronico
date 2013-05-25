@@ -12,11 +12,11 @@ import com.atm.exception.HardwareException;
  * @author 71306587
  */
 public class Printer {
-    public String printTicket (TransactionTO to, int tipoComprovante) throws HardwareException {
+    public String printTicket (TransactionTO to) throws HardwareException {
         if(to.getClient().getNumAgency() == 5) {
             throw new HardwareException (this);
         } else {
-            Ticket comp = new Ticket(to, tipoComprovante);
+            Ticket comp = new Ticket(to);
             return comp.toString();
         }
     }

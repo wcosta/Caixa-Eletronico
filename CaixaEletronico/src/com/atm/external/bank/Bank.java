@@ -72,25 +72,27 @@ public class Bank {
         return saldo;
     }
     
-    public boolean approveDeposit (TransactionTO to) throws TransactionException {
+    public TransactionTO approveDeposit (TransactionTO to) throws TransactionException {
         if(to.getClient().getNumAgency() == 4) {
              throw new TransactionException(to);
         } else {
-            return true;
+            return to;
         }
     }
-    public boolean approveTransfer (TransactionTO to) throws TransactionException {
+    public TransactionTO approveTransfer (TransactionTO to) throws TransactionException {
         if(to.getClient().getNumAgency() == 4) {
             throw new TransactionException(to);
         } else {
-            return true;
+            to.setBalance(new BigDecimal(to.getBalance().intValue() - to.getValue().intValue()).setScale(2));
+            return to;
         }
     }
-    public boolean approveWithdraw (TransactionTO to) throws TransactionException {
+    public TransactionTO approveWithdraw (TransactionTO to) throws TransactionException {
         if(to.getClient().getNumAgency() == 4) {
             throw new TransactionException(to);
         } else {
-            return true;
+            to.setBalance(new BigDecimal(to.getBalance().intValue() - to.getValue().intValue()).setScale(2));
+            return to;
         }
     }
 }

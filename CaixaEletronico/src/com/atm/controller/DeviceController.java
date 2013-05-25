@@ -4,7 +4,6 @@
  */
 package com.atm.controller;
 
-import com.atm.controller.impl.DeviceControllerImpl;
 import com.atm.external.hardware.CardReceptor;
 import com.atm.external.hardware.Dispenser;
 import com.atm.external.hardware.EnvelopeReceptor;

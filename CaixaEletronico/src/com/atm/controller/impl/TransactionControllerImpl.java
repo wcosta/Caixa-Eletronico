@@ -14,6 +14,7 @@ import com.atm.transaction.Consult;
 import com.atm.transaction.Deposit;
 import com.atm.transaction.Draw;
 import com.atm.transaction.Transfer;
+import java.math.BigDecimal;
 
 /**
  *
@@ -29,20 +30,22 @@ public final class TransactionControllerImpl implements TransactionController{
     public boolean validateSession(AccountTO conta) throws ValidationException{
         return Bank.getInstance().validateSession(conta);
     }
+    
+    @Override
+    public BigDecimal consultBalance(TransactionTO to)  throws TransactionException {
+        return Consult.consultBalance(to);
+    }
 
     @Override
-    public Object realizeTransaction(TransactionTO to) throws TransactionException {
+    public TransactionTO realizeTransaction(TransactionTO to) throws TransactionException {
         switch (to.getTransactionType()) {
-            case 1 :
-                return Consult.consultBalance(to);
             case 2 :
                 return Transfer.transfer(to);
             case 3 :
                 return Deposit.depositValue(to);
             case 4 :
                 return Draw.draw(to);
-            default :
-                return null;
         }
+        return to;
     }
 }

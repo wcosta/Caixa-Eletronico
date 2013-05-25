@@ -12,8 +12,8 @@ import com.atm.external.bank.Bank;
  *
  * @author Walter
  */
-public class Transfer extends Transaction {
-    public static boolean transfer(TransactionTO to) throws TransactionException {
+public class Transfer {
+    public static TransactionTO transfer(TransactionTO to) throws TransactionException {
         return Bank.getInstance().approveTransfer(to);
     }
 }

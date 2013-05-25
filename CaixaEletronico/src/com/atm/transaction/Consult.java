@@ -13,7 +13,7 @@ import java.math.BigDecimal;
  *
  * @author Walter
  */
-public class Consult extends Transaction {
+public class Consult {
     public static BigDecimal consultBalance(TransactionTO to) throws TransactionException {
         return Bank.getInstance().getBalance(to);
     }

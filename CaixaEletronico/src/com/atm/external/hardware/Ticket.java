@@ -14,32 +14,34 @@ import java.util.Date;
  */
 public class Ticket {
     private TransactionTO data;
-    private int ticketType;
     
-    public Ticket(TransactionTO to, int ticketType) { 
-        data = to;
-        this.ticketType = ticketType;
+    public Ticket(TransactionTO to) { 
+        this.data = to;
     }
     
-    private final String header = "----------------------------\n"
-            + "Data: " + getCurrentDate() + "\n"
-            + "Localidade: Mackenzie - São Paulo - SP\n"
-            + "----------------------------\n"
-            + "Agência: " + getDados().getClient().getNumAgency() 
-            + " | Conta: " + getDados().getClient().getNumAccount()
-            + "----------------------------\n";
-    private final String footer = "----------------------------\n";
+    private final String header = "----------------------------------------\n";
+    private final String footer = "----------------------------------------\n";
     
     public String getCurrentDate(){
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy - HH:mm");
         return sdf.format(new Date());
     }
     
+    public String getDefaultBlock(){
+        return "Data: " + getCurrentDate() + "\n"
+            + "Localidade: Mackenzie - São Paulo - SP\n"
+            + "----------------------------------------\n"
+            + "Agência: " + getDados().getClient().getNumAgency() 
+            + " | Conta: " + getDados().getClient().getNumAccount()
+            + "\n----------------------------------------\n";
+    }
+    
     @Override
     public String toString(){
         String comprovante = "";
         comprovante += this.header;
-        switch (this.ticketType){
+        comprovante += getDefaultBlock();
+        switch (this.data.getTransactionType()){
             case 1:
                 comprovante += "Saldo atual: " + getDados().getBalance() + "\n";
                 break;
