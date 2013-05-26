@@ -69,6 +69,7 @@ public class Bank {
                 saldo = new BigDecimal(0).setScale(2);
                 break;
         }
+        System.out.println("\nSaldo atual:" + to.getBalance() + "\n");
         return saldo;
     }
     
@@ -76,6 +77,7 @@ public class Bank {
         if(to.getClient().getNumAgency() == 4) {
              throw new TransactionException(to);
         } else {
+            System.out.println("\nDepósito realizado com sucesso!\n");
             return to;
         }
     }
@@ -86,6 +88,7 @@ public class Bank {
             throw new TransactionException("\nErro: saldo insuficiente.\n");
         } else {
             to.setBalance(new BigDecimal(to.getBalance().intValue() - to.getValue().intValue()).setScale(2));
+            System.out.println("\nTransferência realizada com sucesso!\n");
             return to;
         }
     }
@@ -96,6 +99,7 @@ public class Bank {
             throw new TransactionException("\nErro: saldo insuficiente.\n");
         } else {
             to.setBalance(new BigDecimal(to.getBalance().intValue() - to.getValue().intValue()).setScale(2));
+            System.out.println("\nSaque realizado com sucesso!\n");
             return to;
         }
     }
