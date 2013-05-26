@@ -90,8 +90,8 @@ public class Atm {
                         loop = true;
                         transacao.setTransactionType(num);
                         try {
-                            atm.startProcess(transacao);
-                            atm.printTicket(transacao);
+                            transacao = atm.startProcess(transacao);
+                            System.out.println(atm.printTicket(transacao));
                         } catch (Exception ex) {
                             ex.printStackTrace();
                         }
@@ -103,42 +103,5 @@ public class Atm {
                 }
             }
         }
-    }
-    
-    public static TransactionTO getInformations(TransactionTO to) throws IOException {
-        PropertiesReader properties = ComponentFactory.getPropertiesReaderInstance();
-        TransactionTO newTO = to;
-        Scanner in = new Scanner(System.in);
-        switch (newTO.getTransactionType()) {
-            case 2 :
-                System.out.println(properties.getMsg("msg.menu.agency.destiny"));
-                int agT = in.nextInt();
-                System.out.println(properties.getMsg("msg.menu.account.destiny"));
-                int accT = in.nextInt();
-                newTO.setDestiny(new AccountTO(agT, accT));
-                System.out.println(properties.getMsg("msg.menu.value.transfer"));
-                int valorT = in.nextInt();
-                newTO.setValue(new BigDecimal(valorT).setScale(2));
-                break;
-            case 3 :
-                System.out.println(properties.getMsg("msg.menu.agencia.destino"));
-                int agD = in.nextInt();
-                System.out.println(properties.getMsg("msg.menu.conta.destino"));
-                int accD = in.nextInt();
-                newTO.setDestiny(new AccountTO(agD, accD));
-                System.out.println(properties.getMsg("msg.menu.value.deposit"));
-                int valorD = in.nextInt();
-                newTO.setValue(new BigDecimal(valorD).setScale(2));
-                break;
-            case 4 :
-                System.out.println(properties.getMsg("msg.menu.value.draw"));
-                int valorS = in.nextInt();
-                newTO.setValue(new BigDecimal(valorS).setScale(2));
-                break;
-            default :
-                return newTO;
-        }
-        
-        return newTO;
     }
 }

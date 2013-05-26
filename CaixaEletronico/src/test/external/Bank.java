@@ -68,7 +68,7 @@ public class Bank {
                 saldo = new BigDecimal(0).setScale(2);
                 break;
         }
-        System.out.println("\nSaldo atual:" + to.getBalance() + "\n");
+        System.out.println("\nSaldo atual:" + saldo + "\n");
         return saldo;
     }
     

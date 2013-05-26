@@ -4,6 +4,7 @@
  */
 package com.atm;
 
+import com.atm.business.to.AccountTO;
 import com.atm.business.to.TransactionTO;
 import com.atm.controller.DeviceController;
 import com.atm.controller.TransactionController;
@@ -12,10 +13,10 @@ import com.atm.exception.TransactionException;
 import com.atm.exception.ValidationException;
 import com.atm.factory.ComponentFactory;
 import com.atm.log.LogWriter;
-import static test.main.Atm.getInformations;
 import com.atm.properties.PropertiesReader;
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.util.Scanner;
 
 /**
  *
@@ -53,7 +54,8 @@ public class AutomaticTellerMachine {
         deviceController.getCardReceptor().removeCard();
     }
     
-    public void startProcess(TransactionTO transaction) throws IOException, ValidationException, TransactionException{
+    public TransactionTO startProcess(TransactionTO to) throws IOException, ValidationException, TransactionException{
+        TransactionTO transaction = to;
         try {
             transactionController.validateSession(transaction.getClient());
             transaction = getInformations(transaction);
@@ -63,15 +65,55 @@ public class AutomaticTellerMachine {
         } catch (Exception ex) {
             logWriter.writeLog(ex.getMessage());
         }
+        return transaction;
     }
     
-    public void printTicket(TransactionTO transaction) throws HardwareException, IOException{
+    public String printTicket(TransactionTO transaction) throws HardwareException, IOException{
+        String ticket = "";
         try {
-            deviceController.getPrinter().printTicket(transaction);
+            ticket = deviceController.getPrinter().printTicket(transaction);
         } catch (HardwareException ex) {
             System.out.println(ex.getMessage());
             logWriter.writeLog(ex.getMessage());
         }
+        return ticket;
+    }
+    
+    public static TransactionTO getInformations(TransactionTO to) throws IOException {
+        PropertiesReader properties = ComponentFactory.getPropertiesReaderInstance();
+        TransactionTO newTO = to;
+        Scanner in = new Scanner(System.in);
+        switch (newTO.getTransactionType()) {
+            case 2 :
+                System.out.println(properties.getMsg("msg.menu.agency.destiny"));
+                int agT = in.nextInt();
+                System.out.println(properties.getMsg("msg.menu.account.destiny"));
+                int accT = in.nextInt();
+                newTO.setDestiny(new AccountTO(agT, accT));
+                System.out.println(properties.getMsg("msg.menu.value.transfer"));
+                int valorT = in.nextInt();
+                newTO.setValue(new BigDecimal(valorT).setScale(2));
+                break;
+            case 3 :
+                System.out.println(properties.getMsg("msg.menu.agencia.destino"));
+                int agD = in.nextInt();
+                System.out.println(properties.getMsg("msg.menu.conta.destino"));
+                int accD = in.nextInt();
+                newTO.setDestiny(new AccountTO(agD, accD));
+                System.out.println(properties.getMsg("msg.menu.value.deposit"));
+                int valorD = in.nextInt();
+                newTO.setValue(new BigDecimal(valorD).setScale(2));
+                break;
+            case 4 :
+                System.out.println(properties.getMsg("msg.menu.value.draw"));
+                int valorS = in.nextInt();
+                newTO.setValue(new BigDecimal(valorS).setScale(2));
+                break;
+            default :
+                return newTO;
+        }
+        
+        return newTO;
     }
     
     
