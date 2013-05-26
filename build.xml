@@ -11,7 +11,7 @@
     <property name="lib.dir"     value="lib"/>
     <property name="report.dir"  value="${build.dir}/junitreport"/>
     <property name="junit.out.dir.xml"  value="${report.dir}/junit/xml"/>
-    <property name="main-class"  value="com.atm.main.Atm.java"/>
+    <property name="main-class"  value="test.main.Atm.java"/>
 
     <path id="classpath">
         <fileset dir="${lib.dir}" includes="**/*.jar"/>
