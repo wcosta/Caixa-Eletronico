@@ -1,4 +1,4 @@
-package com.atm.external.bank;
+package test.external;
 
 import com.atm.business.to.AccountTO;
 import com.atm.business.to.TransactionTO;
@@ -7,8 +7,7 @@ import com.atm.exception.ValidationException;
 import java.math.BigDecimal;
 
 /*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+ * Mock do retorno de transações e mensagens do Banco
  */
 
 

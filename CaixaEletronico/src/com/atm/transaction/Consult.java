@@ -6,7 +6,7 @@ package com.atm.transaction;
 
 import com.atm.business.to.TransactionTO;
 import com.atm.exception.TransactionException;
-import com.atm.external.bank.Bank;
+import test.external.Bank;
 import java.math.BigDecimal;
 
 /**

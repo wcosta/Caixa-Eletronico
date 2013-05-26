@@ -9,7 +9,7 @@ import com.atm.business.to.TransactionTO;
 import com.atm.controller.TransactionController;
 import com.atm.exception.TransactionException;
 import com.atm.exception.ValidationException;
-import com.atm.external.bank.Bank;
+import test.external.Bank;
 import com.atm.transaction.Consult;
 import com.atm.transaction.Deposit;
 import com.atm.transaction.Draw;

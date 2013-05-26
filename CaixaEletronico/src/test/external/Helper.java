@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.atm.external.bank;
+package test.external;
 
 import com.atm.business.to.AccountTO;
 import com.atm.business.to.TransactionTO;

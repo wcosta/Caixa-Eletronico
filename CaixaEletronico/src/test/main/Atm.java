@@ -2,15 +2,16 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.atm.main;
+package test.main;
 
+import com.atm.AutomaticTellerMachine;
 import com.atm.business.to.AccountTO;
 import com.atm.business.to.TransactionTO;
 import com.atm.controller.DeviceController;
 import com.atm.controller.TransactionController;
 import com.atm.exception.HardwareException;
 import com.atm.exception.ValidationException;
-import com.atm.external.bank.Helper;
+import test.external.Helper;
 import com.atm.factory.ComponentFactory;
 import com.atm.log.LogWriter;
 import com.atm.properties.PropertiesReader;
@@ -24,30 +25,27 @@ import java.util.Scanner;
  */
 public class Atm {
     public static void main(String args[]) throws IOException {
-        TransactionController transactionController = ComponentFactory.getTransactionControllerInstance();
-        DeviceController deviceController = ComponentFactory.getDeviceControllerInstance();
-        LogWriter logWriter = ComponentFactory.getLogWriterInstance();
-        PropertiesReader properties = ComponentFactory.getPropertiesReaderInstance();
+        AutomaticTellerMachine atm = new AutomaticTellerMachine();
         boolean loop = true;
         Scanner in = new Scanner(System.in);
         int num = 0;
-        logWriter.writeLog(properties.getMsg("msg.log.start"));
+        atm.getLogWriter().writeLog(atm.getProperties().getMsg("msg.log.start"));
         
         while (true) {
-            System.out.println(properties.getMsg("msg.menu.1"));
+            System.out.println(atm.getProperties().getMsg("msg.menu.1"));
             num = in.nextInt();
 
             if(num >= 0 && num < 6) {
                 loop = false;
             } else {
-                System.out.println(properties.getMsg("err.invalid.option"));
+                System.out.println(atm.getProperties().getMsg("err.invalid.option"));
             }
             if(num == 0)
                 turnOffAtm();
             
             loop = true;
             
-            deviceController.getCardReceptor().receiveCard();
+            atm.receiveCard();
             TransactionTO transacao = Helper.getTransactionTO(num);
             boolean senhaCorreta = false;
             String senha = "";
@@ -55,15 +53,15 @@ public class Atm {
             while(loop) {
                 try {
                     if(tentativas == 0) {
-                        System.out.println(properties.getMsg("msg.menu.password"));
+                        System.out.println(atm.getProperties().getMsg("msg.menu.password"));
                     } else if(tentativas >= 3) {
-                        deviceController.getCardReceptor().blockCard();
+                        atm.blockCard();
                     }else {
-                        System.out.println(properties.getMsg("err.password.1") + 
-                                (tentativas + 1) + properties.getMsg("err.password.2"));
+                        System.out.println(atm.getProperties().getMsg("err.password.1") + 
+                                (tentativas + 1) + atm.getProperties().getMsg("err.password.2"));
                     }
                     senha = in.next();
-                    if(transactionController.validatePassword(transacao.getClient())){
+                    if(atm.getTransactionController().validatePassword(transacao.getClient())){
                         senhaCorreta = true;
                         break;
                     }
@@ -71,44 +69,34 @@ public class Atm {
                     tentativas++;
                 } catch (HardwareException ex) {
                     System.out.println(ex.getMessage());
-                    logWriter.writeLog(ex.getMessage());
+                    atm.getLogWriter().writeLog(ex.getMessage());
                     loop = false;
                 }
             }
             if(senhaCorreta) {
                 while(true) {
                     while(loop) {
-                        System.out.println(properties.getMsg("msg.menu.2"));
+                        System.out.println(atm.getProperties().getMsg("msg.menu.2"));
 
                         num = in.nextInt();
                         if(num >= 0 && num < 5) {
                             loop = false;
                         } else {
-                            System.out.println(properties.getMsg("err.invalid.option"));
+                            System.out.println(atm.getProperties().getMsg("err.invalid.option"));
                         }
                     }
                     if(num != 0) {
                         loop = true;
                         transacao.setTransactionType(num);
                         try {
-                            transactionController.validateSession(transacao.getClient());
-                            transacao = getInformations(transacao);
-                            transacao.setBalance(transactionController.consultBalance(transacao).setScale(2));
-                            transacao = transactionController.realizeTransaction(transacao);
-                            logWriter.writeLog(transacao);
-
-                            try {
-                                System.out.println(deviceController.getPrinter().printTicket(transacao));
-                            } catch (HardwareException ex) {
-                                System.out.println(ex.getMessage());
-                                logWriter.writeLog(ex.getMessage());
-                            }
+                            atm.startProcess(transacao);
+                            atm.printTicket(transacao);
                         } catch (Exception ex) {
-                            System.out.println(ex.getMessage());
-                            logWriter.writeLog(ex.getMessage());
+                            ex.printStackTrace();
                         }
+                        
                     } else {
-                        deviceController.getCardReceptor().removeCard();
+                        atm.removeCard();
                         break;
                     }
                 }
