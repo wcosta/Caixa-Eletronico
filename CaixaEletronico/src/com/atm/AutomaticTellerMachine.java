@@ -12,8 +12,9 @@ import com.atm.exception.HardwareException;
 import com.atm.exception.TransactionException;
 import com.atm.exception.ValidationException;
 import com.atm.factory.ComponentFactory;
-import com.atm.log.LogWriter;
-import com.atm.properties.PropertiesReader;
+import com.atm.component.LogWriter;
+import com.atm.component.PropertiesReader;
+import com.atm.component.ScreenMessages;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.Scanner;
@@ -27,12 +28,14 @@ public class AutomaticTellerMachine {
     DeviceController deviceController;
     LogWriter logWriter;
     PropertiesReader properties;
+    ScreenMessages screen;
     
     public AutomaticTellerMachine () throws IOException {
         transactionController = ComponentFactory.getTransactionControllerInstance();
         deviceController = ComponentFactory.getDeviceControllerInstance();
         logWriter = ComponentFactory.getLogWriterInstance();
         properties = ComponentFactory.getPropertiesReaderInstance();
+        screen = ComponentFactory.getScreenMessagesInstance();
     }
     
     private BigDecimal avaiableValue;
@@ -62,10 +65,20 @@ public class AutomaticTellerMachine {
             transaction.setBalance(transactionController.consultBalance(transaction).setScale(2));
             transaction = transactionController.realizeTransaction(transaction);
             logWriter.writeLog(transaction);
+            
+            return transaction;
+        } catch (ValidationException ex) {
+            screen.showMessage(ex.getMessage());
+            logWriter.writeLog(ex.getMessage());
+        } catch (TransactionException ex) {
+            screen.showMessage(ex.getMessage());
+            logWriter.writeLog(ex.getMessage());
+            throw ex;
         } catch (Exception ex) {
+            screen.showMessage(ex.getMessage());
             logWriter.writeLog(ex.getMessage());
         }
-        return transaction;
+        return null;
     }
     
     public String printTicket(TransactionTO transaction) throws HardwareException, IOException{
@@ -73,39 +86,40 @@ public class AutomaticTellerMachine {
         try {
             ticket = deviceController.getPrinter().printTicket(transaction);
         } catch (HardwareException ex) {
-            System.out.println(ex.getMessage());
+            screen.showMessage(ex.getMessage());
             logWriter.writeLog(ex.getMessage());
         }
         return ticket;
     }
     
-    public static TransactionTO getInformations(TransactionTO to) throws IOException {
-        PropertiesReader properties = ComponentFactory.getPropertiesReaderInstance();
+    public TransactionTO getInformations(TransactionTO to) throws Exception {
         TransactionTO newTO = to;
         Scanner in = new Scanner(System.in);
         switch (newTO.getTransactionType()) {
             case 2 :
-                System.out.println(properties.getMsg("msg.menu.agency.destiny"));
+                screen.showMessage(properties.getMsg("msg.menu.agency.destiny"));
                 int agT = in.nextInt();
-                System.out.println(properties.getMsg("msg.menu.account.destiny"));
+                screen.showMessage(properties.getMsg("msg.menu.account.destiny"));
                 int accT = in.nextInt();
                 newTO.setDestiny(new AccountTO(agT, accT));
-                System.out.println(properties.getMsg("msg.menu.value.transfer"));
+                screen.showMessage(properties.getMsg("msg.menu.value.transfer"));
                 int valorT = in.nextInt();
                 newTO.setValue(new BigDecimal(valorT).setScale(2));
                 break;
             case 3 :
-                System.out.println(properties.getMsg("msg.menu.agencia.destino"));
+                screen.showMessage(properties.getMsg("msg.menu.agency.destiny"));
                 int agD = in.nextInt();
-                System.out.println(properties.getMsg("msg.menu.conta.destino"));
+                screen.showMessage(properties.getMsg("msg.menu.account.destiny"));
                 int accD = in.nextInt();
                 newTO.setDestiny(new AccountTO(agD, accD));
-                System.out.println(properties.getMsg("msg.menu.value.deposit"));
+                screen.showMessage(properties.getMsg("msg.menu.value.deposit"));
                 int valorD = in.nextInt();
                 newTO.setValue(new BigDecimal(valorD).setScale(2));
+                
+                deviceController.getEnvelopeReceptor().receiveEnvelope(newTO.getClient());
                 break;
             case 4 :
-                System.out.println(properties.getMsg("msg.menu.value.draw"));
+                screen.showMessage(properties.getMsg("msg.menu.value.draw"));
                 int valorS = in.nextInt();
                 newTO.setValue(new BigDecimal(valorS).setScale(2));
                 break;
@@ -121,6 +135,7 @@ public class AutomaticTellerMachine {
     public void turnOffAtm() throws IOException {
         logWriter.writeLog(properties.getMsg("msg.log.end"));
         logWriter.closeLog();
+        System.exit(0);
     }
 
     public TransactionController getTransactionController() {
@@ -137,5 +152,9 @@ public class AutomaticTellerMachine {
 
     public PropertiesReader getProperties() {
         return properties;
+    }
+    
+    public ScreenMessages getScreen() {
+        return screen;
     }
 }

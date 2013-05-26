@@ -6,7 +6,7 @@ package com.atm.external.hardware;
 
 import com.atm.exception.HardwareException;
 import com.atm.factory.ComponentFactory;
-import com.atm.properties.PropertiesReader;
+import com.atm.component.PropertiesReader;
 import java.io.IOException;
 
 /**

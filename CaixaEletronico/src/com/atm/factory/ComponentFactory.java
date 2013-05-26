@@ -8,8 +8,9 @@ import com.atm.controller.DeviceController;
 import com.atm.controller.TransactionController;
 import com.atm.controller.impl.DeviceControllerImpl;
 import com.atm.controller.impl.TransactionControllerImpl;
-import com.atm.log.LogWriter;
-import com.atm.properties.PropertiesReader;
+import com.atm.component.LogWriter;
+import com.atm.component.PropertiesReader;
+import com.atm.component.ScreenMessages;
 import java.io.IOException;
 
 /**
@@ -21,6 +22,7 @@ public class ComponentFactory {
     private static DeviceController deviceController;
     private static LogWriter logWriter;
     private static PropertiesReader propertiesReader;
+    private static ScreenMessages screen;
     
     public static TransactionController getTransactionControllerInstance(){
         if(transactionController == null) {
@@ -48,5 +50,12 @@ public class ComponentFactory {
             propertiesReader = new PropertiesReader();
         }
         return propertiesReader;
+    }
+    
+    public static ScreenMessages getScreenMessagesInstance() throws IOException {
+        if(screen == null) {
+            screen = new ScreenMessages();
+        }
+        return screen;
     }
 }

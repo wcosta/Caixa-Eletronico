@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.atm.log;
+package com.atm.component;
 
 import com.atm.business.to.TransactionTO;
 import java.io.BufferedWriter;

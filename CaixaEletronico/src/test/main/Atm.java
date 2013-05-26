@@ -13,8 +13,8 @@ import com.atm.exception.HardwareException;
 import com.atm.exception.ValidationException;
 import test.external.Helper;
 import com.atm.factory.ComponentFactory;
-import com.atm.log.LogWriter;
-import com.atm.properties.PropertiesReader;
+import com.atm.component.LogWriter;
+import com.atm.component.PropertiesReader;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.Scanner;
@@ -41,9 +41,9 @@ public class Atm {
             } else {
                 System.out.println(atm.getProperties().getMsg("err.invalid.option"));
             }
-            if(num == 0)
+            if(num == 0) {
                 atm.turnOffAtm();
-            
+            }
             loop = true;
             
             atm.receiveCard();
@@ -91,9 +91,12 @@ public class Atm {
                         transacao.setTransactionType(num);
                         try {
                             transacao = atm.startProcess(transacao);
-                            System.out.println(atm.printTicket(transacao));
+                            if(transacao != null)
+                                atm.getScreen().showMessage(atm.printTicket(transacao));
+                            else
+                                break;
                         } catch (Exception ex) {
-                            ex.printStackTrace();
+                            
                         }
                         
                     } else {

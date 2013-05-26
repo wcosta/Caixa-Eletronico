@@ -7,8 +7,10 @@ package com.atm.external.hardware;
 import com.atm.business.to.AccountTO;
 import com.atm.exception.HardwareException;
 import com.atm.factory.ComponentFactory;
-import com.atm.properties.PropertiesReader;
+import com.atm.component.PropertiesReader;
 import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -23,7 +25,13 @@ public class EnvelopeReceptor {
         if(acc.getNumAgency() == 5) {
             throw new HardwareException(this);
         } else {
-            System.out.println(properties.getMsg("msg.hardware.envelope"));
+            System.out.println(properties.getMsg("msg.hardware.envelope.receive"));
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException ex) {
+                Logger.getLogger(EnvelopeReceptor.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            System.out.println(properties.getMsg("msg.hardware.envelope.confirmation"));
         }
     }
 }
