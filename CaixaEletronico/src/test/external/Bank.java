@@ -98,6 +98,8 @@ public class Bank {
             throw new TransactionException(to);
         } else if (to.getBalance().intValue() < to.getValue().intValue()) {
             throw new TransactionException("\nErro: saldo insuficiente.\n");
+        } else if ((to.getValue().intValue() % 10) != 0){
+            throw new TransactionException("\nErro: valor a ser sacado deve ser múltiplo de 10.\n");
         } else {
             to.setBalance(new BigDecimal(to.getBalance().intValue() - to.getValue().intValue()).setScale(2));
             System.out.println("\nSaque realizado com sucesso!\n");
