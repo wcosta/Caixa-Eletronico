@@ -29,7 +29,8 @@ public class Atm {
         boolean loop = true;
         Scanner in = new Scanner(System.in);
         int num = 0;
-        atm.getLogWriter().writeLog(atm.getProperties().getMsg("msg.log.start"));
+        
+        atm.startAtm(10000);
         
         while (true) {
             System.out.println(atm.getProperties().getMsg("msg.menu.1"));
@@ -41,7 +42,7 @@ public class Atm {
                 System.out.println(atm.getProperties().getMsg("err.invalid.option"));
             }
             if(num == 0)
-                turnOffAtm();
+                atm.turnOffAtm();
             
             loop = true;
             
@@ -139,12 +140,5 @@ public class Atm {
         }
         
         return newTO;
-    }
-
-    public static void turnOffAtm() throws IOException {
-        PropertiesReader properties = ComponentFactory.getPropertiesReaderInstance();
-        ComponentFactory.getLogWriterInstance().writeLog(properties.getMsg("msg.log.end"));
-        ComponentFactory.getLogWriterInstance().closeLog();
-        System.exit(0);
     }
 }
