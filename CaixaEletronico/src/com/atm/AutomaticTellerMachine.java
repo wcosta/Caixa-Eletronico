@@ -42,7 +42,7 @@ public class AutomaticTellerMachine {
     
     public void startAtm(int value) throws IOException{
         avaiableValue = new BigDecimal(value).setScale(2);
-        logWriter.writeLog(properties.getMsg("msg.log.start"));
+        logWriter.writeLog(properties.getMsg("msg.log.start") + " com " + avaiableValue + " reais");
     }
     
     public void receiveCard() {
@@ -64,6 +64,9 @@ public class AutomaticTellerMachine {
             transaction = getInformations(transaction);
             transaction.setBalance(transactionController.consultBalance(transaction).setScale(2));
             transaction = transactionController.realizeTransaction(transaction);
+            if(transaction.getTransactionType() == TransactionTO.TYPE_WITHDRAW) {
+                updateAvaiableValue(transaction.getValue());
+            }
             logWriter.writeLog(transaction);
             
             return transaction;
@@ -119,9 +122,23 @@ public class AutomaticTellerMachine {
                 deviceController.getEnvelopeReceptor().receiveEnvelope(newTO.getClient());
                 break;
             case 4 :
+                if(avaiableValue.intValue() < 10) {
+                    screen.showMessage(properties.getMsg("err.draw.unavaiable"));
+                    break;
+                }
                 screen.showMessage(properties.getMsg("msg.menu.value.draw"));
                 int valorS = in.nextInt();
-                newTO.setValue(new BigDecimal(valorS).setScale(2));
+                boolean validValue = isValueAvaiable(valorS);
+                if(validValue) {
+                    newTO.setValue(new BigDecimal(valorS).setScale(2));
+                } else {
+                    while (validValue != true) {
+                        screen.showMessage(properties.getMsg("err.draw.invalid.value.1") + avaiableValue + properties.getMsg("err.draw.invaild.value.2"));
+                        valorS = in.nextInt();
+                        validValue = isValueAvaiable(valorS);
+                    }
+                    newTO.setValue(new BigDecimal(valorS).setScale(2));
+                }
                 break;
             default :
                 return newTO;
@@ -130,7 +147,14 @@ public class AutomaticTellerMachine {
         return newTO;
     }
     
+    public boolean isValueAvaiable (int value){
+        if(value <= avaiableValue.intValue()) return true;
+        else return false;
+    }
     
+    public void updateAvaiableValue (BigDecimal value) {
+        avaiableValue = avaiableValue.subtract(value);
+    }
 
     public void turnOffAtm() throws IOException {
         logWriter.writeLog(properties.getMsg("msg.log.end"));
